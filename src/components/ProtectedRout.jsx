@@ -3,7 +3,7 @@ import {Redirect, Route} from 'react-router-dom'
 
 function ProtectedRout({path, children, loggedIn}) {
   return (
-    <Route path={path}>
+    <Route exact path={path}>
       {loggedIn ? children : <Redirect to="/sign-in" />}
     </Route>
   )

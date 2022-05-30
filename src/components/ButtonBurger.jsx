@@ -8,7 +8,7 @@ function ButtonBurger({onToggleMobileMenu}) {
   }
 
   return (
-    <div className={`burger ${isActive ? 'burger_active' : ''}`} onClick={handleClick}>
+    <div className={`burger ${isActive && 'burger_active'}`} onClick={handleClick}>
       <span/>
     </div>
   )

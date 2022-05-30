@@ -36,13 +36,15 @@ function App() {
   const history = useHistory()
 
   useEffect(() => {
-    Promise.all([api.getProfile(), api.getInitialCards()])
-      .then(([profile, cards]) => {
-        setCurrentUser(profile)
-        setCards(cards)
-      })
-      .catch(console.log)
-  }, [])
+    if (loggedIn) {
+      Promise.all([api.getProfile(), api.getInitialCards()])
+        .then(([profile, cards]) => {
+          setCurrentUser(profile)
+          setCards(cards)
+        })
+        .catch(console.log)
+    }
+  }, [loggedIn])
 
   useEffect(() => {
     checkToken()
@@ -144,12 +146,13 @@ function App() {
       })
   }
   const checkToken = () => {
-    if (localStorage.getItem('jwt')) {
-      let jwt = localStorage.getItem('jwt')
+    let jwt = localStorage.getItem('jwt')
+    if (jwt) {
       auth.getUserData(jwt).then((res) => {
         setLoggedIn(true)
         setOwnerEmail(res.data.email)
       })
+        .catch(console.log)
     }
   }
   const handleLogin = (formValue) => {
@@ -159,6 +162,12 @@ function App() {
           localStorage.setItem('jwt', res.token)
         }
         checkToken()
+      })
+      .catch(error => {
+        console.log(error)
+        setErrorMessage(error.message)
+        setIsSuccess(false)
+        setIsInfoTooltipPopupOpen(true)
       })
   }
   const handleMobileMenuToggle = () => {
@@ -252,6 +261,8 @@ function App() {
             onClose={closeAllPopups}
             isSuccess={isSuccess}
             errorMessage={errorMessage}
+            successText="Вы успешно зарегистрировались!"
+            errorAltText="Что-то пошло не так :("
           />
         </div>
       </div>
