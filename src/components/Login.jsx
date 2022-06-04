@@ -1,18 +1,26 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 
 function Login({children, title, buttonText, onSendData}) {
   const [formValues, setFormValues] = useState({email: '', password: ''})
+  const [formErrors, setFormErrors] = useState({email: '', password: ''})
 
   const handleChange = (e) => {
-    const {name, value} = e.target
+    const {name, value, validationMessage} = e.target
     setFormValues({...formValues, [name]: value})
+    setFormErrors({...formErrors, [name]: validationMessage})
   }
 
   const onSubmit = (e) => {
     e.preventDefault()
     onSendData(formValues)
   }
+  const [isButtonDisabled , setIsButtonDisabled] = useState(true)
+
+  useEffect(() => {
+    const isFormValidValue = Object.keys(formErrors).every(key => !formErrors[key])
+    setIsButtonDisabled(!isFormValidValue)
+  },[formErrors])
 
   return (
     <div className="popup__container popup__container_sign-in">
@@ -42,6 +50,7 @@ function Login({children, title, buttonText, onSendData}) {
               className="popup__error"
               id="error-popup__field_type_name-add-cards"
             >
+              {formErrors.email}
           </span>
           </div>
           <div className="popup__field-container">
@@ -59,12 +68,14 @@ function Login({children, title, buttonText, onSendData}) {
               className="popup__error"
               id="error-popup__field_type_link-add-cards"
             >
+              {formErrors.password}
           </span>
           </div>
         </div>
         <button
           type="submit"
           className="popup__button-submit popup__button-submit_sign-in"
+          disabled={isButtonDisabled}
         >
           {buttonText}
         </button>
