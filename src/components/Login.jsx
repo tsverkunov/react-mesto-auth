@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react'
 function Login({children, title, buttonText, onSendData}) {
   const [formValues, setFormValues] = useState({email: '', password: ''})
   const [formErrors, setFormErrors] = useState({email: '', password: ''})
+  const [isButtonDisabled , setIsButtonDisabled] = useState(true)
 
   const handleChange = (e) => {
     const {name, value, validationMessage} = e.target
@@ -15,7 +16,6 @@ function Login({children, title, buttonText, onSendData}) {
     e.preventDefault()
     onSendData(formValues)
   }
-  const [isButtonDisabled , setIsButtonDisabled] = useState(true)
 
   useEffect(() => {
     const isFormValidValue = Object.keys(formErrors).every(key => !formErrors[key])
@@ -60,6 +60,7 @@ function Login({children, title, buttonText, onSendData}) {
               placeholder="Пароль"
               className="popup__field popup__field_type_link popup__field_sign-in"
               id="popup__field_type_password-sign-in"
+              minLength="3"
               value={formValues.password}
               onChange={handleChange}
               required
