@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co'
+export const BASE_URL = 'https://tsverkunov-mesto-b.nomorepartiesxyz.ru'
 
 const checkRequest = (res) => {
   if (res.ok) {

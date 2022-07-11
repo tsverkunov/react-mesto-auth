@@ -1,16 +1,18 @@
 class Api {
-  constructor({baseUrl, headers}) {
+  constructor({baseUrl, headers, credentials}) {
     this._baseUrl = baseUrl
     this._headers = headers
+    // this._credentials = credentials
   }
 
   _getResponseData(res) {
-    return !res.ok ? Promise.reject(`Ошибка: ${res.status}`) : res.json()
+    return !res.ok ? Promise.reject(`Ошибка тут: ${res.status}`) : res.json()
   }
 
   getProfile() {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers
+      headers: this._headers,
+      // credentials: this._credentials,
     })
       .then(res => this._getResponseData(res))
   }
@@ -75,9 +77,10 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://tsverkunov.mesto.students.nomorepartiesxyz.ru',
+  baseUrl: 'https://tsverkunov-mesto-b.nomorepartiesxyz.ru',
   headers: {
-    authorization: 'e0347de3-3f3e-4b66-951f-031aa57f2a82',
+    // authorization: 'e0347de3-3f3e-4b66-951f-031aa57f2a82',
     'Content-Type': 'application/json'
-  }
+  },
+  // credentials: 'include',
 })
